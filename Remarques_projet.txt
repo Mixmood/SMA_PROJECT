@@ -1,0 +1,23 @@
+N ressources
+P tâches
+
+Un agent c'est une ressource.
+Chaque agent a des compétences : quelle tâche va-t-on lui allouer ?
+Un agent = une tâche / une sous-tâche (c'est générique) 
+Une tâche peut être composée de sous-tâches. On peut donc allouer les sous-tâches.
+Situation initiale, et le système répond. Il n'y a pas de nouvelles tâches qui apparaissent au cours du temps.
+Au bout d'un certain nombre de cycles, toutes les tâches doivent être allouées par la système.
+
+Il y a un agent (super agent) qui délègue les tâches
+
+
+Pour cette tâche on a besoin d'un niveau de compétence (est-ce que le système a des ressources de niveau supérieur (suffisant) pour résoudre cette tâche), un délai, etc
+
+le CDC dépend de ce que l'on veut tester :
+-est-ce que le système est tjs satisfaisant ? Faire tourner le système avec plusieurs jeux de données générés aléatoirement. Regarder a chaque fois le taux de réponse satisfaisant du système
+(satisfaction des critères). A nous de juger ce qui est satisfait, c'est nous qui faisons la fonction de satisfaction. Ca peut être un critère simple, ou avec une moyenne, etc.
+
+Plusieurs échantillons, qui se différencient selon le nombre de tâches. Mettre les résultats dans un fichier de données
+
+
+Différentes stratégies à mettre en place. Comparer ces stratégies avec du random.

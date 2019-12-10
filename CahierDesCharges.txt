@@ -1,0 +1,25 @@
+CAHIER DES CHARGES :
+N= nb de contractants
+C= nb de compétences différentes
+T= nb de tâches
+niv_max= niveau maximal pour une compétence
+
+Tous les (N) contractants possèdent toutes les (C) compétences avec un niveau pour chacune (entre 0 et niv_max)
+Le Manager a les (T) tâches à répartir entre les (N) contractants.
+Le Manager fait un appel d'offre pour chacune des tâches.
+Chacun des contractant choisit de répondre oui ou non à l'offre s'il n'a pas déjà une tâche allouée.
+Le Manager choisit entre les contractants qui ont répondu oui à l'appel d'offre et assigne la tâche à l'un d'entre eux.
+et voilà
+
+
+Fonction de satisfaction :
+poids de la tâche : somme du niveau des contraintes
+facteur de réussite pour une tache : 
+		S = 0;
+		pour chaque contrainte, on regarde le niveau du contractant : 
+					s'il est supérieur, S+= valeur de la contrainte;
+					sinon, S+= niveau du contractant;
+		(Normalement 0 <= S <= poids de la tâche)
+		return (S/poids de la tâche);
+On multiplie le poids par le facteur réussite
+
