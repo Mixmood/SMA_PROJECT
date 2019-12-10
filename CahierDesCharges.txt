@@ -1,10 +1,17 @@
 CAHIER DES CHARGES :
-N= nb de contractants
+Allocation des tâches théorique 
+
+N= nb de contractants (qui peuvent effectuer des tâches)
 C= nb de compétences différentes
 T= nb de tâches
 niv_max= niveau maximal pour une compétence
+nb_contr= nombre de contraintes pour une tâche (>=2 && <= C)
 
-Tous les (N) contractants possèdent toutes les (C) compétences avec un niveau pour chacune (entre 0 et niv_max)
+
+
+Tous les (N) contractants possèdent toutes les (C) compétences avec un niveau pour chacune (entre 0 et niv_max) (0 = pas de compétence)
+Chacune des tâches a des (2 <= nb_contr <= C ) contraintes qui correspondent à des niveaux de compétence : par exemple une tâche nécessite la compétence A au niveau 3 et la compétence C au niveau 5
+
 Le Manager a les (T) tâches à répartir entre les (N) contractants.
 Le Manager fait un appel d'offre pour chacune des tâches.
 Chacun des contractant choisit de répondre oui ou non à l'offre s'il n'a pas déjà une tâche allouée.
