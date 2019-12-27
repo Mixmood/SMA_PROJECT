@@ -46,8 +46,9 @@ among a set of agents (whose local
 names must be specified as arguments).
 @author Giovanni Caire - TILAB
 */
-public class JINContractNetInitiatorAgent extends Agent {
+public class RandomContractNetInitiatorAgent extends Agent {
 	private int nResponders;
+	private int nRefuses = 0;
 	private Object[] args;
 
 	private Task[] tasks;
@@ -57,7 +58,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 	private int nActionPerformed = 0;
 	private int valuePerformed = 0;
 
-	public JINContractNetInitiatorAgent() {
+	public RandomContractNetInitiatorAgent() {
 		tasks = new Task[Parameters.nbTasks];
 		for(int i = 0; i < Parameters.nbTasks; ++i) {
 			tasks[i] = new Task();
@@ -71,13 +72,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 			nResponders = args.length;
 			System.out.println("Trying to delegate "+tasks.length+" tasks to "+nResponders+" responders.");
 
-			// On trie les tâches par ordre décroissant de valeur
-			Comparator<Task> taskComparator = new Comparator<Task>() {
-				public int compare(Task t1, Task t2) {
-					return -Integer.compare(t1.value(), t2.value());
-				}
-			};
-			Arrays.sort(tasks, taskComparator);
+			// On ne trie pas les tâches.
 
 			handleTask(0);
 		}
@@ -94,6 +89,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 			printResults();
 		}
 		else {
+			nRefuses = 0;
 			System.out.println("---------------");
 			System.out.println("Tâche n°"+(index+1));
 			System.out.println(tasks[index].toMessage());
@@ -116,7 +112,12 @@ public class JINContractNetInitiatorAgent extends Agent {
 				}
 
 				protected void handleRefuse(ACLMessage refuse) {
+					++nRefuses;
 					System.out.println("Agent "+refuse.getSender().getName()+" refused");
+					if(nRefuses>=nResponders) {
+						System.out.println("No agent performed the requested action");
+						handleTask(index+1);
+					}
 				}
 
 				protected void handleFailure(ACLMessage failure) {
@@ -149,11 +150,9 @@ public class JINContractNetInitiatorAgent extends Agent {
 							reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
 							acceptances.addElement(reply);
 							int proposal = Integer.parseInt(msg.getContent());
-							if (proposal > bestProposal) {
-								bestProposal = proposal;
-								bestProposer = msg.getSender();
-								accept = reply;
-							}
+							bestProposal = proposal;
+							bestProposer = msg.getSender();
+							accept = reply;
 						}
 					}
 					// Accept the proposal of the best proposer
@@ -176,7 +175,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 
 	private void printResults() {
 		System.out.println("************************");
-		System.out.println("Résultats (JIN) :");
+		System.out.println("Résultats (Random) :");
 		System.out.println(nResponders+" agents");
 		System.out.println(Parameters.nbContraintes+" compétences/contraintes");
 		System.out.println(tasks.length+" tâches -> valeur : "+value);

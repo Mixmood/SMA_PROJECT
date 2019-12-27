@@ -41,18 +41,19 @@ import jade.domain.FIPAAgentManagement.FailureException;
    a task to an agent among a set of candidates.
    @author Giovanni Caire - TILAB
  */
-public class JINContractNetResponderAgent extends Agent {
+public class RandomContractNetResponderAgent extends Agent {
 	private int[] competences;
 	private boolean available = true;
 
 
-	public JINContractNetResponderAgent() {
+	public RandomContractNetResponderAgent() {
 		competences = new int[Parameters.nbContraintes];
 		for(int i = 0; i < Parameters.nbContraintes; ++i) {
       // competences[i] = (int) (Math.random() * 10);
 			competences[i] = Number.get();
     }
 	}
+
 
 	protected void setup() {
 		String str = "";
@@ -70,7 +71,7 @@ public class JINContractNetResponderAgent extends Agent {
 				Task t = new Task(cfp.getContent());
 				System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is "+cfp.getContent()+". Value is "+t.value()+".");
 				int proposal = t.evaluateAction(competences);
-				if (available && proposal > 0) {
+				if (available && Math.random() >= 0.5) {
 					// We provide a proposal
 					System.out.println("Agent "+getLocalName()+": Proposing "+proposal);
 					ACLMessage propose = cfp.createReply();
