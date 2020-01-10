@@ -14,7 +14,7 @@ public class ProjectStatisticsWritter extends Agent {
   protected void setup() {
     long time = System.currentTimeMillis();
 
-    // Initialisation des fichiers de sortie
+    // Initialisation of out files
     String enTete = "Contractants ; Contraintes ; Tâches ; Valeur ; Tâches terminées ; Valeur ; Satisfaction ; Rapport global ; Rapport tâches terminées \n";
 
     try {
@@ -42,7 +42,7 @@ public class ProjectStatisticsWritter extends Agent {
 
       System.out.println("Temps d'exécution (ms) : "+String.valueOf(System.currentTimeMillis()-time));
 
-      // System.out.println("ProjectStatisticsWritter killing itself.");
+      System.out.println("ProjectStatisticsWritter killing itself.");
       doDelete();
     }
     catch(Exception e) {
@@ -51,6 +51,7 @@ public class ProjectStatisticsWritter extends Agent {
   }
 
   private void launchOne() {
+    // We create 2 runs : one with our agents, another with random agent but with the same parameters/constraints/skills
     System.out.println("###################################\n###################################");
     Parameters.nbResponders = (int)(Math.random() * 1000)+1;
     Parameters.nbContraintes = (int)(Math.random() * 48)+3;
@@ -61,6 +62,7 @@ public class ProjectStatisticsWritter extends Agent {
     Number.setStep((int)(Math.random() * 10)+1);
 
     try {
+      // Creation of JINProjectInitiator
       AgentController JINinitiator = container.createNewAgent("JIN_project_initiator_", "examples.JINProject.JINProjectInitiator", null);
       JINinitiator.start();
 
@@ -79,6 +81,7 @@ public class ProjectStatisticsWritter extends Agent {
 
       Number.setIndex(startIndex);
 
+      // Creation of RandomProjectInitiator
       AgentController RANDOMinitiator = container.createNewAgent("random_project_initiator", "examples.JINProject.RandomProjectInitiator", null);
       RANDOMinitiator.start();
 

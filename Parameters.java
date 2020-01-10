@@ -7,6 +7,6 @@ public class Parameters {
   public static int nbContraintes = 10;   // C
   public static int nbTasks = 4;          // T
 
-  public static DataOutputStream JINOutput = null;
-  public static DataOutputStream RandomOutput = null;
+  public static DataOutputStream JINOutput = null;    // The file to write our results
+  public static DataOutputStream RandomOutput = null; // The file to write random results
 }

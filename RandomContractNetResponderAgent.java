@@ -49,7 +49,6 @@ public class RandomContractNetResponderAgent extends Agent {
 	public RandomContractNetResponderAgent() {
 		competences = new int[Parameters.nbContraintes];
 		for(int i = 0; i < Parameters.nbContraintes; ++i) {
-			// competences[i] = (int) (Math.random() * 10);
 			competences[i] = Number.get();
 		}
 	}
@@ -60,7 +59,7 @@ public class RandomContractNetResponderAgent extends Agent {
 		for (int k = 0; k < competences.length ; ++k) {
 			str += competences[k];
 		}
-		// System.out.println("Agent "+getLocalName()+" ("+str+") waiting for CFP...");
+		System.out.println("Agent "+getLocalName()+" ("+str+") waiting for CFP...");
 		MessageTemplate template = MessageTemplate.and(
 		MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
 		MessageTemplate.MatchPerformative(ACLMessage.CFP) );
@@ -71,17 +70,17 @@ public class RandomContractNetResponderAgent extends Agent {
 				String content = cfp.getContent();
 				if(content.equals("end"))
 				{
-					// System.out.println("Agent "+getLocalName()+" killing itself.");
+					System.out.println("Agent "+getLocalName()+" killing itself.");
 					doDelete();
 					return null;
 				}
 				else {
 					Task t = new Task(content);
-					// System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is "+content+". Value is "+t.value()+".");
+					System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is "+content+". Value is "+t.value()+".");
 					int proposal = t.evaluateAction(competences);
 					if (available && Math.random() >= 0.5) {
 						// We provide a proposal
-						// System.out.println("Agent "+getLocalName()+": Proposing "+proposal);
+						System.out.println("Agent "+getLocalName()+": Proposing "+proposal);
 						ACLMessage propose = cfp.createReply();
 						propose.setPerformative(ACLMessage.PROPOSE);
 						propose.setContent(String.valueOf(proposal));
@@ -89,7 +88,7 @@ public class RandomContractNetResponderAgent extends Agent {
 					}
 					else {
 						// We refuse to provide a proposal
-						// System.out.println("Agent "+getLocalName()+": Refuse");
+						System.out.println("Agent "+getLocalName()+": Refuse");
 						throw new RefuseException("evaluation-failed");
 					}
 				}
@@ -97,19 +96,19 @@ public class RandomContractNetResponderAgent extends Agent {
 
 			@Override
 			protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose,ACLMessage accept) throws FailureException {
-				// System.out.println("Agent "+getLocalName()+": Proposal accepted");
+				System.out.println("Agent "+getLocalName()+": Proposal accepted");
 
 				available = false;
 				Task t = new Task(cfp.getContent());
 				int proposal = t.evaluateAction(competences);
-				// System.out.println("Agent "+getLocalName()+": Action performed -> "+proposal);
+				System.out.println("Agent "+getLocalName()+": Action performed -> "+proposal);
 				ACLMessage inform = accept.createReply();
 				inform.setPerformative(ACLMessage.INFORM);
 				return inform;
 			}
 
 			protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
-				// System.out.println("Agent "+getLocalName()+": Proposal rejected");
+				System.out.println("Agent "+getLocalName()+": Proposal rejected");
 			}
 		} );
 	}

@@ -7,6 +7,7 @@ import jade.wrapper.AgentController;
 public class RandomProjectInitiator extends Agent {
   protected void setup() {
     Object[] args = getArguments();
+    // Setup of the parameters
     if (args != null && args.length > 2) {
       Parameters.nbResponders = Integer.parseInt((String)args[0]);
       Parameters.nbContraintes = Integer.parseInt((String)args[1]);
@@ -22,6 +23,7 @@ public class RandomProjectInitiator extends Agent {
     PlatformController container = getContainerController();
     try {
       String[] responderNames = new String[Parameters.nbResponders];
+      // Creation of responders
       for (int i = 0; i < Parameters.nbResponders; ++i) {
         String localName = "random_responder_"+i;
         responderNames[i] = localName;
@@ -31,11 +33,13 @@ public class RandomProjectInitiator extends Agent {
 
       Thread.sleep(1000);
 
+      // Creation of initiator
       AgentController initiator = container.createNewAgent("random_initiator", "examples.JINProject.RandomContractNetInitiatorAgent", responderNames);
       initiator.start();
 
       Thread.sleep(1000);
 
+      // Awaiting death of initiator
       while(true) {
         try {
           if(initiator.getState().getName()=="Deleted") {
@@ -46,7 +50,7 @@ public class RandomProjectInitiator extends Agent {
           break;
         }
       }
-      // System.out.println("RandomProjectInitiator killing itself.");
+      System.out.println("RandomProjectInitiator killing itself.");
       doDelete();
     }
     catch (Exception e) {

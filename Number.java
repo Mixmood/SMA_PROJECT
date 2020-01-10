@@ -1,5 +1,11 @@
 package examples.JINProject;
 
+/**
+* This class generates numbers in a random way with decimals of pi.
+* This allows us to have several times the same values to be able to test with our 2 types of agents.
+*/
+
+
 public class Number {
   private static int index = 0;
   private static int step = 1;

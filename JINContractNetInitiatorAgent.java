@@ -71,7 +71,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 			nResponders = args.length;
 			System.out.println("Trying to delegate "+tasks.length+" tasks to "+nResponders+" responders.");
 
-			// On trie les tâches par ordre décroissant de valeur
+			// We sort the tasks in descending order of value
 			Comparator<Task> taskComparator = new Comparator<Task>() {
 				public int compare(Task t1, Task t2) {
 					return -Integer.compare(t1.value(), t2.value());
@@ -95,10 +95,10 @@ public class JINContractNetInitiatorAgent extends Agent {
 			endProcess();
 		}
 		else {
-			// System.out.println("---------------");
-			// System.out.println("Tâche n°"+(index+1));
-			// System.out.println(tasks[index].toMessage());
-			// System.out.println("Valeur : "+tasks[index].value());
+			System.out.println("---------------");
+			System.out.println("Tâche n°"+(index+1));
+			System.out.println(tasks[index].toMessage());
+			System.out.println("Valeur : "+tasks[index].value());
 			value += tasks[index].value();
 			// Fill the CFP message
 			ACLMessage msg = new ACLMessage(ACLMessage.CFP);
@@ -113,21 +113,21 @@ public class JINContractNetInitiatorAgent extends Agent {
 			addBehaviour(new ContractNetInitiator(this, msg) {
 
 				protected void handlePropose(ACLMessage propose, Vector v) {
-					// System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
+					System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
 				}
 
 				protected void handleRefuse(ACLMessage refuse) {
-					// System.out.println("Agent "+refuse.getSender().getName()+" refused");
+					System.out.println("Agent "+refuse.getSender().getName()+" refused");
 				}
 
 				protected void handleFailure(ACLMessage failure) {
 					if (failure.getSender().equals(myAgent.getAMS())) {
 						// FAILURE notification from the JADE runtime: the receiver
 						// does not exist
-						// System.out.println("Responder does not exist");
+						System.out.println("Responder does not exist");
 					}
 					else {
-						// System.out.println("Agent "+failure.getSender().getName()+" failed");
+						System.out.println("Agent "+failure.getSender().getName()+" failed");
 					}
 					// Immediate failure --> we will not receive a response from this agent
 					nResponders--;
@@ -136,7 +136,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 				protected void handleAllResponses(Vector responses, Vector acceptances) {
 					if (responses.size() < nResponders) {
 						// Some responder didn't reply within the specified timeout
-						// System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
+						System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
 					}
 					// Evaluate proposals.
 					int bestProposal = -1;
@@ -160,7 +160,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 					// Accept the proposal of the best proposer
 					if (accept != null) {
 						satisfaction+=bestProposal;
-						// System.out.println("Accepting proposal "+bestProposal+" from responder "+bestProposer.getName());
+						System.out.println("Accepting proposal "+bestProposal+" from responder "+bestProposer.getName());
 						accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 					}
 				}
@@ -168,7 +168,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 				protected void handleInform(ACLMessage inform) {
 					++nActionPerformed;
 					valuePerformed += tasks[index].value();
-					// System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
+					System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
 					handleTask(index+1);
 				}
 			} );
@@ -183,7 +183,7 @@ public class JINContractNetInitiatorAgent extends Agent {
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
 		msg.setContent("end");
 		send(msg);
-		// System.out.println("Initiator killing itself");
+		System.out.println("Initiator killing itself");
 		doDelete();
 	}
 

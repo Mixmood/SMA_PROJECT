@@ -8,6 +8,7 @@ import jade.wrapper.State;
 public class JINProjectInitiator extends Agent {
   protected void setup() {
     Object[] args = getArguments();
+    // Setup of the parameters
     if (args != null && args.length > 2) {
       Parameters.nbResponders = Integer.parseInt((String)args[0]);
       Parameters.nbContraintes = Math.max(3,Integer.parseInt((String)args[1]));
@@ -23,6 +24,7 @@ public class JINProjectInitiator extends Agent {
     PlatformController container = getContainerController();
     try {
       String[] responderNames = new String[Parameters.nbResponders];
+      // Creation of responders
       for (int i = 0; i < Parameters.nbResponders; ++i) {
         String localName = "JIN_responder_"+i;
         responderNames[i] = localName;
@@ -32,11 +34,13 @@ public class JINProjectInitiator extends Agent {
 
       Thread.sleep(1000);
 
+      // Creation of initiator
       AgentController initiator = container.createNewAgent("JIN_initiator", "examples.JINProject.JINContractNetInitiatorAgent", responderNames);
       initiator.start();
 
       Thread.sleep(1000);
 
+      // Awaiting death of initiator
       while(true) {
         try {
           if(initiator.getState().getName()=="Deleted") {
@@ -47,7 +51,7 @@ public class JINProjectInitiator extends Agent {
           break;
         }
       }
-      // System.out.println("JINProjectInitiator killing itself.");
+      System.out.println("JINProjectInitiator killing itself.");
       doDelete();
     }
     catch (Exception e) {

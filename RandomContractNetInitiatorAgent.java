@@ -91,10 +91,10 @@ public class RandomContractNetInitiatorAgent extends Agent {
 		}
 		else {
 			nRefuses = 0;
-			// System.out.println("---------------");
-			// System.out.println("Tâche n°"+(index+1));
-			// System.out.println(tasks[index].toMessage());
-			// System.out.println("Valeur : "+tasks[index].value());
+			System.out.println("---------------");
+			System.out.println("Tâche n°"+(index+1));
+			System.out.println(tasks[index].toMessage());
+			System.out.println("Valeur : "+tasks[index].value());
 			value += tasks[index].value();
 			// Fill the CFP message
 			ACLMessage msg = new ACLMessage(ACLMessage.CFP);
@@ -109,14 +109,14 @@ public class RandomContractNetInitiatorAgent extends Agent {
 			addBehaviour(new ContractNetInitiator(this, msg) {
 
 				protected void handlePropose(ACLMessage propose, Vector v) {
-					// System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
+					System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
 				}
 
 				protected void handleRefuse(ACLMessage refuse) {
 					++nRefuses;
-					// System.out.println("Agent "+refuse.getSender().getName()+" refused");
+					System.out.println("Agent "+refuse.getSender().getName()+" refused");
 					if(nRefuses>=nResponders) {
-						// System.out.println("No agent performed the requested action");
+						System.out.println("No agent performed the requested action");
 						handleTask(index+1);
 					}
 				}
@@ -125,10 +125,10 @@ public class RandomContractNetInitiatorAgent extends Agent {
 					if (failure.getSender().equals(myAgent.getAMS())) {
 						// FAILURE notification from the JADE runtime: the receiver
 						// does not exist
-						// System.out.println("Responder does not exist");
+						System.out.println("Responder does not exist");
 					}
 					else {
-						// System.out.println("Agent "+failure.getSender().getName()+" failed");
+						System.out.println("Agent "+failure.getSender().getName()+" failed");
 					}
 					// Immediate failure --> we will not receive a response from this agent
 					nResponders--;
@@ -137,7 +137,7 @@ public class RandomContractNetInitiatorAgent extends Agent {
 				protected void handleAllResponses(Vector responses, Vector acceptances) {
 					if (responses.size() < nResponders) {
 						// Some responder didn't reply within the specified timeout
-						// System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
+						System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
 					}
 					// Evaluate proposals.
 					int bestProposal = -1;
@@ -156,10 +156,10 @@ public class RandomContractNetInitiatorAgent extends Agent {
 							accept = reply;
 						}
 					}
-					// Accept the proposal of the best proposer
+					// Accept the proposal of the last proposer
 					if (accept != null) {
 						satisfaction+=bestProposal;
-						// System.out.println("Accepting proposal "+bestProposal+" from responder "+bestProposer.getName());
+						System.out.println("Accepting proposal "+bestProposal+" from responder "+bestProposer.getName());
 						accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 					}
 				}
@@ -167,7 +167,7 @@ public class RandomContractNetInitiatorAgent extends Agent {
 				protected void handleInform(ACLMessage inform) {
 					++nActionPerformed;
 					valuePerformed += tasks[index].value();
-					// System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
+					System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
 					handleTask(index+1);
 				}
 			} );
@@ -182,7 +182,7 @@ public class RandomContractNetInitiatorAgent extends Agent {
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
 		msg.setContent("end");
 		send(msg);
-		// System.out.println("Initiator killing itself");
+		System.out.println("Initiator killing itself");
 		doDelete();
 	}
 
